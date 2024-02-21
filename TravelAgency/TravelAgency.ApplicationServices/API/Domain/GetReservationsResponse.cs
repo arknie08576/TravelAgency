@@ -7,7 +7,7 @@ using TravelAgency.ApplicationServices.API.Domain.Models;
 
 namespace TravelAgency.ApplicationServices.API.Domain
 {
-    internal class GetReservationsResponse : ResponseBase<List<Reservation>>
+    public class GetReservationsResponse : ResponseBase<List<Reservation>>
     {
     }
 }

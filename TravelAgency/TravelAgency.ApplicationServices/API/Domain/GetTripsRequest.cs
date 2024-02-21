@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TravelAgency.ApplicationServices.API.Domain
 {
-    internal class GetTripsRequest : IRequest<GetTripsResponse>
+    public class GetTripsRequest : IRequest<GetTripsResponse>
     {
     }
 }

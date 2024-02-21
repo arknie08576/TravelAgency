@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TravelAgency.ApplicationServices.API.Domain
 {
-    internal class GetReservationsRequest : IRequest<GetReservationsResponse>
+    public class GetReservationsRequest : IRequest<GetReservationsResponse>
     {
     }
 }

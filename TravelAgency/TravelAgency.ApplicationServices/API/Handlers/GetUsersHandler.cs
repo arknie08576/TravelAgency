@@ -1,42 +1,42 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using TravelAgency.ApplicationServices.API.Domain;
+using TravelAgency.ApplicationServices.API.Domain.Models;
 using TravelAgency.DataAccess;
+using TravelAgency.DataAccess.Entities;
 
 namespace TravelAgency.ApplicationServices.API.Handlers
 {
     public class GetUsersHandler : IRequestHandler<GetUsersRequest, GetUsersResponse>
     {
         private readonly IRepository<DataAccess.Entities.User> UserRepository;
-        public GetUsersHandler(IRepository<DataAccess.Entities.User> UserRepository)
+        private readonly IMapper mapper;
+        public GetUsersHandler(IRepository<DataAccess.Entities.User> UserRepository, IMapper mapper)
         {
             this.UserRepository = UserRepository;
+            this.mapper = mapper;
+
         }
-        public Task<GetUsersResponse> Handle(GetUsersRequest request, CancellationToken cancellationToken)
+        public async Task<GetUsersResponse> Handle(GetUsersRequest request, CancellationToken cancellationToken)
         {
-            var Users = this.UserRepository.GetAll();
-            var domainUsers = Users.Select(x => new Domain.Models.User()
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Surname = x.Surname,
-                Login = x.Login,
-                Email = x.Email
+            var users = await this.UserRepository.GetAll();
+            var mappedUser = this.mapper.Map<List<Domain.Models.User>>(users);
 
-
-
-            });
             var response = new GetUsersResponse()
             {
-                Data = domainUsers.ToList()
+                Data = mappedUser
 
             };
-            return Task.FromResult(response);
+            return response;
 
         }
+
+
     }
 }

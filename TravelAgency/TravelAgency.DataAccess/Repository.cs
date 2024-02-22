@@ -18,35 +18,35 @@ namespace TravelAgency.DataAccess
             this.entities = contex.Set<T>();
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            T entity=entities.SingleOrDefault(s=>s.Id==id);
+            T entity= await entities.SingleOrDefaultAsync(s=>s.Id==id);
             entities.Remove(entity);
-            contex.SaveChanges();
+            await contex.SaveChangesAsync();
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<List<T>> GetAll()
         {
-            return entities.AsEnumerable();
+            return await entities.ToListAsync();
         }
 
-        public T GetById(int id)
+        public async Task<T> GetById(int id)
         {
-            return entities.SingleOrDefault(s=>s.Id == id);
+            return await entities.SingleOrDefaultAsync(s=>s.Id == id);
         }
 
-        public void Insert(T entity)
+        public async Task Insert(T entity)
         {
             if (entity == null) throw new ArgumentNullException("entity");
 
             entities.Add(entity);
-            contex.SaveChanges();
+            await contex.SaveChangesAsync();
         }
 
-        public void Update(T entity)
+        public async Task Update(T entity)
         {
             if (entity == null) throw new ArgumentNullException("entity");
-            contex.SaveChanges();
+            await contex.SaveChangesAsync();
         }
     }
 }

@@ -1,41 +1,42 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using TravelAgency.ApplicationServices.API.Domain;
+using TravelAgency.ApplicationServices.API.Domain.Models;
 using TravelAgency.DataAccess;
+using TravelAgency.DataAccess.Entities;
 
 namespace TravelAgency.ApplicationServices.API.Handlers
 {
     public class GetReservationsHandler : IRequestHandler<GetReservationsRequest, GetReservationsResponse>
     {
-        private readonly IRepository<DataAccess.Entities.Reservation> ReservationRepository;
-        public GetReservationsHandler(IRepository<DataAccess.Entities.Reservation> ReservationRepository)
+        private readonly IRepository<DataAccess.Entities.Reservation> reservationRepository;
+        private readonly IMapper mapper;
+        public GetReservationsHandler(IRepository<DataAccess.Entities.Reservation> reservationRepository, IMapper mapper)
         {
-            this.ReservationRepository = ReservationRepository;
+            this.reservationRepository = reservationRepository;
+            this.mapper = mapper;
+
         }
-        public Task<GetReservationsResponse> Handle(GetReservationsRequest request, CancellationToken cancellationToken)
+        public async Task<GetReservationsResponse> Handle(GetReservationsRequest request, CancellationToken cancellationToken)
         {
-            var Reservations = this.ReservationRepository.GetAll();
-            var domainReservations = Reservations.Select(x => new Domain.Models.Reservation()
-            {
-                Id = x.Id,
-                AdultsNumber = x.AdultsNumber,
-                KidsNumber = x.KidsNumber,
-                PricePaid = x.PricePaid
+            var reservations = await this.reservationRepository.GetAll();
+            var mappedReservation = this.mapper.Map<List<Domain.Models.Reservation>>(reservations);
 
-
-
-            });
             var response = new GetReservationsResponse()
             {
-                Data = domainReservations.ToList()
+                Data = mappedReservation
 
             };
-            return Task.FromResult(response);
+            return response;
 
         }
+
+
     }
 }

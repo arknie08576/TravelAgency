@@ -1,7 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using TravelAgency.ApplicationServices.API.Domain;
+using TravelAgency.ApplicationServices.API.Mappings;
 using TravelAgency.DataAccess;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +14,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddMediatR(cfg=>cfg.RegisterServicesFromAssembly(typeof(ResponseBase<>).Assembly));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+builder.Services.AddAutoMapper(typeof(OpinionsProfile).Assembly);
+
 builder.Services.AddDbContext<TravelAgencyContex>(
     opt=>opt.UseSqlServer(builder.Configuration.GetConnectionString("TravelAgencyDatabaseConnection")));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

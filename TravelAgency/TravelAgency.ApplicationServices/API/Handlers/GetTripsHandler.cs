@@ -1,49 +1,42 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using TravelAgency.ApplicationServices.API.Domain;
+using TravelAgency.ApplicationServices.API.Domain.Models;
 using TravelAgency.DataAccess;
+using TravelAgency.DataAccess.Entities;
 
 namespace TravelAgency.ApplicationServices.API.Handlers
 {
     public class GetTripsHandler : IRequestHandler<GetTripsRequest, GetTripsResponse>
     {
         private readonly IRepository<DataAccess.Entities.Trip> TripRepository;
-        public GetTripsHandler(IRepository<DataAccess.Entities.Trip> TripRepository)
+        private readonly IMapper mapper;
+        public GetTripsHandler(IRepository<DataAccess.Entities.Trip> TripRepository, IMapper mapper)
         {
             this.TripRepository = TripRepository;
+            this.mapper = mapper;
+
         }
-        public Task<GetTripsResponse> Handle(GetTripsRequest request, CancellationToken cancellationToken)
+        public async Task<GetTripsResponse> Handle(GetTripsRequest request, CancellationToken cancellationToken)
         {
-            var Trips = this.TripRepository.GetAll();
-            var domainTrips = Trips.Select(x => new Domain.Models.Trip()
-            {
-                Id = x.Id,
-                HotelName=x.HotelName,
-                HotelDescription= x.HotelDescription,
-                Country=x.Country,
-                City=x.City,
-                PricePerAdult=x.PricePerAdult,
-                PricePerKid=x.PricePerKid,
-                StartDate=x.StartDate,
-                StopDate=x.StopDate,
-                Departure=x.Departure,
-                Food=x.Food,
-                RequiredDocuments=x.RequiredDocuments
+            var trips = await this.TripRepository.GetAll();
+            var mappedTrip = this.mapper.Map<List<Domain.Models.Trip>>(trips);
 
-
-
-    });
             var response = new GetTripsResponse()
             {
-                Data = domainTrips.ToList()
+                Data = mappedTrip
 
             };
-            return Task.FromResult(response);
+            return response;
 
         }
+
+
     }
 }

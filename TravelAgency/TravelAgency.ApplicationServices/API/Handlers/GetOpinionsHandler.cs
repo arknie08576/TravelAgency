@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,26 +16,24 @@ namespace TravelAgency.ApplicationServices.API.Handlers
     public class GetOpinionsHandler : IRequestHandler<GetOpinionsRequest, GetOpinionsResponse>
     {
         private readonly IRepository<DataAccess.Entities.Opinion> opinionRepository;
-        public GetOpinionsHandler(IRepository<DataAccess.Entities.Opinion> opinionRepository) { 
-        this.opinionRepository = opinionRepository;
-        }
-        public Task<GetOpinionsResponse> Handle(GetOpinionsRequest request,CancellationToken cancellationToken)
+        private readonly IMapper mapper;
+        public GetOpinionsHandler(IRepository<DataAccess.Entities.Opinion> opinionRepository, IMapper mapper)
         {
-            var opinions = this.opinionRepository.GetAll();
-            var domainOpinions = opinions.Select(x => new Domain.Models.Opinion()
-            {
-                Id = x.Id,
-                Rating = x.Rating,
-                Description = x.Description,
-                Date = x.Date
+            this.opinionRepository = opinionRepository;
+            this.mapper = mapper;
 
-            });
+        }
+        public async Task<GetOpinionsResponse> Handle(GetOpinionsRequest request, CancellationToken cancellationToken)
+        {
+            var opinions = await this.opinionRepository.GetAll();
+            var mappedOpinion = this.mapper.Map<List<Domain.Models.Opinion>>(opinions);
+
             var response = new GetOpinionsResponse()
             {
-                Data = domainOpinions.ToList()
+                Data = mappedOpinion
 
             };
-            return Task.FromResult(response);
+            return response;
 
         }
 

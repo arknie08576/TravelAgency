@@ -25,14 +25,14 @@ namespace TravelAgency.DataAccess
             await contex.SaveChangesAsync();
         }
 
-        public async Task<List<T>> GetAll()
+        public Task<List<T>> GetAll()
         {
-            return await entities.ToListAsync();
+            return entities.ToListAsync();
         }
 
-        public async Task<T> GetById(int id)
+        public Task<T> GetById(int id)
         {
-            return await entities.SingleOrDefaultAsync(s=>s.Id == id);
+            return entities.SingleOrDefaultAsync(s=>s.Id == id);
         }
 
         public async Task Insert(T entity)

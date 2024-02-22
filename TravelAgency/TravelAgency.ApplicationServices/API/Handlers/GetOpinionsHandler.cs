@@ -9,23 +9,31 @@ using System.Threading.Tasks;
 using TravelAgency.ApplicationServices.API.Domain;
 using TravelAgency.ApplicationServices.API.Domain.Models;
 using TravelAgency.DataAccess;
+using TravelAgency.DataAccess.CQRS.Queries;
 using TravelAgency.DataAccess.Entities;
 
 namespace TravelAgency.ApplicationServices.API.Handlers
 {
     public class GetOpinionsHandler : IRequestHandler<GetOpinionsRequest, GetOpinionsResponse>
     {
-        private readonly IRepository<DataAccess.Entities.Opinion> opinionRepository;
+        
         private readonly IMapper mapper;
-        public GetOpinionsHandler(IRepository<DataAccess.Entities.Opinion> opinionRepository, IMapper mapper)
+        private readonly IQueryExecutor queryExecutor;
+        public GetOpinionsHandler(IMapper mapper, IQueryExecutor queryExecutor)
         {
-            this.opinionRepository = opinionRepository;
+           
             this.mapper = mapper;
+            this.queryExecutor = queryExecutor;
 
         }
         public async Task<GetOpinionsResponse> Handle(GetOpinionsRequest request, CancellationToken cancellationToken)
         {
-            var opinions = await this.opinionRepository.GetAll();
+            var query = new GetOpinionsQuery();
+            var opinions = await this.queryExecutor.Execute(query);
+
+
+
+           
             var mappedOpinion = this.mapper.Map<List<Domain.Models.Opinion>>(opinions);
 
             var response = new GetOpinionsResponse()

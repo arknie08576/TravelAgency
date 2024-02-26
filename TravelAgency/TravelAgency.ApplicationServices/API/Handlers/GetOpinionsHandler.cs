@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TravelAgency.ApplicationServices.API.Domain;
 using TravelAgency.ApplicationServices.API.Domain.Models;
-using TravelAgency.DataAccess;
+using TravelAgency.DataAccess.CQRS;
 using TravelAgency.DataAccess.CQRS.Queries;
 using TravelAgency.DataAccess.Entities;
 

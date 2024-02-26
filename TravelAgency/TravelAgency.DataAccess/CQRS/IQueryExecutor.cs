@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TravelAgency.DataAccess.CQRS.Queries;
 
-namespace TravelAgency.DataAccess
+namespace TravelAgency.DataAccess.CQRS
 {
     public interface IQueryExecutor
     {

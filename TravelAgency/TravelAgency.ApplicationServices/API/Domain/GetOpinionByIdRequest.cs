@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelAgency.ApplicationServices.API.Domain.Models;
 
 namespace TravelAgency.ApplicationServices.API.Domain
 {
-    public class GetOpinionsRequest : IRequest<GetOpinionsResponse>
+    public class GetOpinionByIdRequest : IRequest<GetOpinionByIdResponse>
     {
-        public int Rating { get; set; }
+        public int OpinionId { get; set; }
     }
 }

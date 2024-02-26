@@ -6,17 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 using TravelAgency.DataAccess.Entities;
 
-namespace TravelAgency.DataAccess.CQRS.Queries
+namespace TravelAgency.DataAccess.CQRS.Commands
 {
-    public class GetOpinionQuery : QueryBase<Opinion>
+    public class DeleteOpinionCommand : CommandBase<Opinion, Opinion>
     {
         public int Id { get; set; }
-        public int Rating { get; set; }
         public override async Task<Opinion> Execute(TravelAgencyContex contex)
         {
-            var opinion = await contex.Opinions.FirstOrDefaultAsync(x=>x.Id == this.Id);
-
-            return opinion;
+            var opinion = await contex.Opinions.FirstOrDefaultAsync(x => x.Id == this.Id);
+            contex.Opinions.Remove(opinion);
+            await contex.SaveChangesAsync();
+            return this.Parameter;
         }
     }
 }

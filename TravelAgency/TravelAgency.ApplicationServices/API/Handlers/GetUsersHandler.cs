@@ -8,24 +8,32 @@ using System.Text;
 using System.Threading.Tasks;
 using TravelAgency.ApplicationServices.API.Domain;
 using TravelAgency.ApplicationServices.API.Domain.Models;
-using TravelAgency.DataAccess;
+using TravelAgency.DataAccess.CQRS;
+using TravelAgency.DataAccess.CQRS.Queries;
 using TravelAgency.DataAccess.Entities;
 
 namespace TravelAgency.ApplicationServices.API.Handlers
 {
     public class GetUsersHandler : IRequestHandler<GetUsersRequest, GetUsersResponse>
     {
-        private readonly IRepository<DataAccess.Entities.User> UserRepository;
+
         private readonly IMapper mapper;
-        public GetUsersHandler(IRepository<DataAccess.Entities.User> UserRepository, IMapper mapper)
+        private readonly IQueryExecutor queryExecutor;
+        public GetUsersHandler(IMapper mapper, IQueryExecutor queryExecutor)
         {
-            this.UserRepository = UserRepository;
+
             this.mapper = mapper;
+            this.queryExecutor = queryExecutor;
 
         }
         public async Task<GetUsersResponse> Handle(GetUsersRequest request, CancellationToken cancellationToken)
         {
-            var users = await this.UserRepository.GetAll();
+            var query = new GetUsersQuery();
+            var users = await this.queryExecutor.Execute(query);
+
+
+
+
             var mappedUser = this.mapper.Map<List<Domain.Models.User>>(users);
 
             var response = new GetUsersResponse()

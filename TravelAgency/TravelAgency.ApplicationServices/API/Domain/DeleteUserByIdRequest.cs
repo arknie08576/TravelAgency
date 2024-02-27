@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace TravelAgency.ApplicationServices.API.Domain
 {
-    public class GetOpinionsRequest : IRequest<GetOpinionsResponse>
+    public class DeleteUserByIdRequest : IRequest<DeleteUserByIdResponse>
     {
-        //public int Rating { get; set; }
+        public int UserId { get; set; }
     }
 }

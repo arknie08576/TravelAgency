@@ -28,7 +28,7 @@ namespace TravelAgency.ApplicationServices.API.Mappings
             this.CreateMap<AddOpinionRequest, Opinion>()
                 .ForMember(x => x.Rating, y => y.MapFrom(x => x.Rating))
                 .ForMember(x => x.Date, y => y.MapFrom(x => x.Date))
-                .ForMember(x => x.ReservationId, y => y.MapFrom(x => x.Rating))
+                .ForMember(x => x.ReservationId, y => y.MapFrom(x => x.ReservationId))
                 .ForMember(x => x.Description, y => y.MapFrom(x => x.Description))
                 .ForMember(x => x.ReservationId, y => y.MapFrom(x => x.ReservationId));
 

@@ -9,6 +9,7 @@ namespace TravelAgency.ApplicationServices.API.Domain.Models
 {
     public class Opinion
     {
+        public int ReservationId { get; set; }
         public int Id { get; set; }
         public int Rating { get; set; }
         public string Description { get; set; }  

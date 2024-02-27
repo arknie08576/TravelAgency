@@ -8,15 +8,14 @@ using TravelAgency.DataAccess.Entities;
 
 namespace TravelAgency.DataAccess.CQRS.Queries
 {
-    public class GetOpinionQuery : QueryBase<Opinion>
+    public class GetTripsQuery : QueryBase<List<Trip>>
     {
         public int Id { get; set; }
-       // public int Rating { get; set; }
-        public override async Task<Opinion> Execute(TravelAgencyContex contex)
+        public override async Task<List<Trip>> Execute(TravelAgencyContex contex)
         {
-            var opinion = await contex.Opinions.FirstOrDefaultAsync(x=>x.Id == this.Id);
+            var trips = await contex.Trips.ToListAsync();
 
-            return opinion;
+            return trips;
         }
     }
 }

@@ -1,15 +1,16 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TravelAgency.ApplicationServices.API.Domain.Models
+namespace TravelAgency.ApplicationServices.API.Domain
 {
-    public class User
+    public class PutUserByIdRequest : IRequest<PutUserByIdResponse>
     {
-        public int Id { get; set; }
+        public int UserId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Login { get; set; }

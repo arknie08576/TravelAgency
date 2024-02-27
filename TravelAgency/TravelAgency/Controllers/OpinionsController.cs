@@ -14,14 +14,14 @@ namespace TravelAgency.Controllers
         }
 
         [HttpGet]
-        [Route("")]
-        public async Task<IActionResult> GetAllOpinions([FromQuery] GetOpinionsRequest request)
+        [Route("/opinions")]
+        public async Task<IActionResult> GetAllOpinions()//[FromQuery] GetOpinionsRequest request
         {
-            var response = await this.mediator.Send(request);
+            var response = await this.mediator.Send(new GetOpinionsRequest());//request
             return this.Ok(response);
         }
         [HttpGet]
-        [Route("{opinionId}")]
+        [Route("/opinions/{opinionId}")]
         public async Task<IActionResult> GetById([FromRoute] int opinionId)
         {
             
@@ -33,7 +33,7 @@ namespace TravelAgency.Controllers
             return this.Ok(response);
         }
         [HttpPost]
-        [Route ("")]
+        [Route ("/opinions")]
         public async Task<IActionResult> AddOpinion([FromBody] AddOpinionRequest request)
         {
             var response = await this.mediator.Send(request);
@@ -41,7 +41,7 @@ namespace TravelAgency.Controllers
 
         }
         [HttpDelete]
-        [Route("{opinionId}")]
+        [Route("/opinions/{opinionId}")]
         public async Task<IActionResult> DeleteById([FromRoute] int opinionId)
         {
 
@@ -53,26 +53,11 @@ namespace TravelAgency.Controllers
             return this.Ok(response);
         }
         [HttpPut]
-        [Route("")]
-        public async Task<IActionResult> PutById([FromBody] PutOpinionByIdRequest request)
+        [Route("/opinions/{opinionId}")]
+        public async Task<IActionResult> PutById([FromBody] PutOpinionByIdRequest request, [FromRoute] int opinionId)
         {
-        //    public int OpinionId { get; set; }
-        //public int ReservationId { get; set; }
-        //public int Rating { get; set; }
 
-        //public string Description { get; set; }
-
-        //public DateOnly Date { get; set; }
-
-        //var request = new PutOpinionByIdRequest()
-        //    {
-        //        OpinionId = opinionId,
-        //        ReservationId = reservationId,
-        //        Rating = rating,
-        //        Description = description,
-        //        Date = date
-                
-        //    };
+            if (request.OpinionId != opinionId) { return BadRequest(request); }
             var response = await this.mediator.Send(request);
             return this.Ok(response);
         }

@@ -8,25 +8,33 @@ using System.Text;
 using System.Threading.Tasks;
 using TravelAgency.ApplicationServices.API.Domain;
 using TravelAgency.ApplicationServices.API.Domain.Models;
-using TravelAgency.DataAccess;
+using TravelAgency.DataAccess.CQRS;
+using TravelAgency.DataAccess.CQRS.Queries;
 using TravelAgency.DataAccess.Entities;
 
 namespace TravelAgency.ApplicationServices.API.Handlers
 {
     public class GetTripsHandler : IRequestHandler<GetTripsRequest, GetTripsResponse>
     {
-        private readonly IRepository<DataAccess.Entities.Trip> TripRepository;
+
         private readonly IMapper mapper;
-        public GetTripsHandler(IRepository<DataAccess.Entities.Trip> TripRepository, IMapper mapper)
+        private readonly IQueryExecutor queryExecutor;
+        public GetTripsHandler(IMapper mapper, IQueryExecutor queryExecutor)
         {
-            this.TripRepository = TripRepository;
+
             this.mapper = mapper;
+            this.queryExecutor = queryExecutor;
 
         }
         public async Task<GetTripsResponse> Handle(GetTripsRequest request, CancellationToken cancellationToken)
         {
-            var trips = await this.TripRepository.GetAll();
-            var mappedTrip = this.mapper.Map<List<Domain.Models.Trip>>(trips);
+            var query = new GetTripsQuery();
+            var Trips = await this.queryExecutor.Execute(query);
+
+
+
+
+            var mappedTrip = this.mapper.Map<List<Domain.Models.Trip>>(Trips);
 
             var response = new GetTripsResponse()
             {

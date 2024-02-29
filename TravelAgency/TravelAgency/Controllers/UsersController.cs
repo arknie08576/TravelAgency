@@ -6,12 +6,13 @@ namespace TravelAgency.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UsersController : ControllerBase
+    public class UsersController : ApiControllerBase
     {
-        private readonly IMediator mediator;
-        public UsersController(IMediator mediator)
+        private readonly ILogger<OpinionsController> _logger;
+        public UsersController(IMediator mediator, ILogger<OpinionsController> logger) : base (mediator)
         {
-            this.mediator = mediator;
+            _logger = logger;
+            logger.LogInformation("We are in Users");
         }
 
         [HttpGet]

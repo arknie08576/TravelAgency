@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 using TravelAgency.ApplicationServices.API.Domain;
 using TravelAgency.ApplicationServices.API.Domain.Models;
 
-namespace TravelAgency.ApplicationServices.API.Mappings
+namespace TravelAgency.ApplicationServices.Mappings
 {
     public class TripsProfile : Profile
     {
         public TripsProfile()
         {
 
-            this.CreateMap<TravelAgency.DataAccess.Entities.Trip, Trip>()
+            CreateMap<DataAccess.Entities.Trip, Trip>()
                 .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
                 .ForMember(x => x.HotelName, y => y.MapFrom(z => z.HotelName))
                 .ForMember(x => x.HotelDescription, y => y.MapFrom(z => z.HotelDescription))
@@ -28,10 +28,10 @@ namespace TravelAgency.ApplicationServices.API.Mappings
                 .ForMember(x => x.Food, y => y.MapFrom(z => z.Food))
                 .ForMember(x => x.RequiredDocuments, y => y.MapFrom(z => z.RequiredDocuments));
 
-            this.CreateMap<DeleteTripByIdRequest, Trip>()
+            CreateMap<DeleteTripByIdRequest, Trip>()
                .ForMember(x => x.Id, y => y.MapFrom(x => x.TripId));
 
-            this.CreateMap<PutTripByIdRequest, Trip>()
+            CreateMap<PutTripByIdRequest, Trip>()
                 .ForMember(x => x.Id, y => y.MapFrom(z => z.TripId))
                 .ForMember(x => x.HotelName, y => y.MapFrom(z => z.HotelName))
                 .ForMember(x => x.HotelDescription, y => y.MapFrom(z => z.HotelDescription))
@@ -45,7 +45,7 @@ namespace TravelAgency.ApplicationServices.API.Mappings
                 .ForMember(x => x.Food, y => y.MapFrom(z => z.Food))
                 .ForMember(x => x.RequiredDocuments, y => y.MapFrom(z => z.RequiredDocuments));
 
-            this.CreateMap<AddTripRequest, Trip>()
+            CreateMap<AddTripRequest, Trip>()
                 .ForMember(x => x.Id, y => y.MapFrom(z => z.TripId))
                 .ForMember(x => x.HotelName, y => y.MapFrom(z => z.HotelName))
                 .ForMember(x => x.HotelDescription, y => y.MapFrom(z => z.HotelDescription))
@@ -59,7 +59,7 @@ namespace TravelAgency.ApplicationServices.API.Mappings
                 .ForMember(x => x.Food, y => y.MapFrom(z => z.Food))
                 .ForMember(x => x.RequiredDocuments, y => y.MapFrom(z => z.RequiredDocuments));
 
-            this.CreateMap<Trip, Domain.Models.Trip>()
+            CreateMap<Trip, API.Domain.Models.Trip>()
                 .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
                 .ForMember(x => x.HotelName, y => y.MapFrom(z => z.HotelName))
                 .ForMember(x => x.HotelDescription, y => y.MapFrom(z => z.HotelDescription))

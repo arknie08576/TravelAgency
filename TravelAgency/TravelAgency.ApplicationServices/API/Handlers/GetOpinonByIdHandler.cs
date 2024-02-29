@@ -8,6 +8,7 @@ using TravelAgency.ApplicationServices.API.Domain;
 using TravelAgency.DataAccess.CQRS.Queries;
 using TravelAgency.DataAccess.CQRS;
 using MediatR;
+using TravelAgency.ApplicationServices.API.ErrorHandling;
 
 namespace TravelAgency.ApplicationServices.API.Handlers
 {
@@ -33,6 +34,14 @@ namespace TravelAgency.ApplicationServices.API.Handlers
                Id=request.OpinionId,
             };
             var opinion = await this.queryExecutor.Execute(query);
+            if (opinion == null)
+            {
+                return new GetOpinionByIdResponse() { 
+                Error=new ErrorModel(ErrorType.NotFound)
+                
+                };
+
+            }
             var mappedOpinion = this.mapper.Map<Domain.Models.Opinion>(opinion);
 
             var response = new GetOpinionByIdResponse()

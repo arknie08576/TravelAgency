@@ -8,36 +8,37 @@ using TravelAgency.ApplicationServices.API.Domain;
 using TravelAgency.DataAccess.Entities;
 
 
-namespace TravelAgency.ApplicationServices.API.Mappings
+namespace TravelAgency.ApplicationServices.Mappings
 {
     public class OpinionsProfile : Profile
     {
-        public OpinionsProfile() {
+        public OpinionsProfile()
+        {
 
 
-            this.CreateMap<DeleteOpinionByIdRequest, Opinion>()
+            CreateMap<DeleteOpinionByIdRequest, Opinion>()
                 .ForMember(x => x.Id, y => y.MapFrom(x => x.OpinionId));
 
-            this.CreateMap<PutOpinionByIdRequest, Opinion>()
+            CreateMap<PutOpinionByIdRequest, Opinion>()
                 .ForMember(x => x.Id, y => y.MapFrom(x => x.OpinionId))
                 .ForMember(x => x.Date, y => y.MapFrom(x => x.Date))
                 .ForMember(x => x.ReservationId, y => y.MapFrom(x => x.ReservationId))
                 .ForMember(x => x.Description, y => y.MapFrom(x => x.Description))
                 .ForMember(x => x.Rating, y => y.MapFrom(x => x.Rating));
 
-            this.CreateMap<AddOpinionRequest, Opinion>()
+            CreateMap<AddOpinionRequest, Opinion>()
                 .ForMember(x => x.Rating, y => y.MapFrom(x => x.Rating))
                 .ForMember(x => x.Date, y => y.MapFrom(x => x.Date))
                 .ForMember(x => x.ReservationId, y => y.MapFrom(x => x.ReservationId))
                 .ForMember(x => x.Description, y => y.MapFrom(x => x.Description))
                 .ForMember(x => x.ReservationId, y => y.MapFrom(x => x.ReservationId));
 
-            this.CreateMap<Opinion, Domain.Models.Opinion>()
+            CreateMap<Opinion, API.Domain.Models.Opinion>()
                 .ForMember(x => x.Id, y => y.MapFrom(z => z.Id))
                 .ForMember(x => x.Date, y => y.MapFrom(z => z.Date))
                 .ForMember(x => x.Description, y => y.MapFrom(z => z.Description))
                 .ForMember(x => x.Rating, y => y.MapFrom(z => z.Rating));
-               
+
 
         }
     }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TravelAgency.ApplicationServices.API.Domain;
-using TravelAgency.ApplicationServices.API.Domain.Models;
+using TravelAgency.DataAccess.Entities;
 
 namespace TravelAgency.ApplicationServices.Mappings
 {
@@ -32,7 +32,7 @@ namespace TravelAgency.ApplicationServices.Mappings
                 .ForMember(x => x.KidsNumber, y => y.MapFrom(x => x.KidsNumber));
 
             CreateMap<AddReservationRequest, Reservation>()
-                .ForMember(x => x.Id, y => y.MapFrom(x => x.ReservationId))
+               // .ForMember(x => x.Id, y => y.MapFrom(x => x.ReservationId))
                 .ForMember(x => x.TripId, y => y.MapFrom(x => x.TripId))
                 .ForMember(x => x.UserId, y => y.MapFrom(x => x.UserId))
                 .ForMember(x => x.AdultsNumber, y => y.MapFrom(x => x.AdultsNumber))

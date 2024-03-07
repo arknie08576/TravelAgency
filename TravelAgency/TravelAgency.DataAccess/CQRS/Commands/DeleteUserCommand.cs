@@ -14,7 +14,10 @@ namespace TravelAgency.DataAccess.CQRS.Commands
         public override async Task<User> Execute(TravelAgencyContex contex)
         {
             var user = await contex.Users.FirstOrDefaultAsync(x => x.Id == this.Id);
-            contex.Users.Remove(user);
+            if (user != null)
+            {
+                contex.Users.Remove(user);
+            }
             await contex.SaveChangesAsync();
             return this.Parameter;
         }

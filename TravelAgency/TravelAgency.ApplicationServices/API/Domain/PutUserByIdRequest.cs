@@ -5,10 +5,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelAgency.DataAccess.Entities;
 
 namespace TravelAgency.ApplicationServices.API.Domain
 {
-    public class PutUserByIdRequest : IRequest<PutUserByIdResponse>
+    public class PutUserByIdRequest : IRequest<PutUserByIdResponse>, IUserRequest
     {
         public int UserId { get; set; }
         public string Name { get; set; }
@@ -16,5 +17,16 @@ namespace TravelAgency.ApplicationServices.API.Domain
         public string Login { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
+        private User user { get; set; }
+
+        public void SetUser(User u)
+        {
+            user = u;
+        }
+
+        public User GetUser()
+        {
+            return user;
+        }
     }
 }

@@ -4,11 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelAgency.DataAccess.Entities;
 
 namespace TravelAgency.ApplicationServices.API.Domain
 {
-    public class DeleteTripByIdRequest : IRequest<DeleteTripByIdResponse>
+    public class DeleteTripByIdRequest : IRequest<DeleteTripByIdResponse>, IUserRequest
     {
         public int TripId { get; set; }
+        private User user { get; set; }
+
+        public void SetUser(User u)
+        {
+            user = u;
+        }
+
+        public User GetUser()
+        {
+            return user;
+        }
     }
 }

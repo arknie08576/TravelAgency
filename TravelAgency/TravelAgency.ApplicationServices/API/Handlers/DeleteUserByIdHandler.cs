@@ -9,6 +9,7 @@ using TravelAgency.ApplicationServices.API.Domain;
 using TravelAgency.DataAccess.CQRS.Commands;
 using TravelAgency.DataAccess.CQRS;
 using TravelAgency.DataAccess.Entities;
+using TravelAgency.ApplicationServices.API.ErrorHandling;
 
 
 namespace TravelAgency.ApplicationServices.API.Handlers
@@ -27,6 +28,22 @@ namespace TravelAgency.ApplicationServices.API.Handlers
 
         public async Task<DeleteUserByIdResponse> Handle(DeleteUserByIdRequest request, CancellationToken cancellationToken)
         {
+            if (request.GetUser() == null)
+            {
+                return new DeleteUserByIdResponse()
+                {
+                    Error = new ErrorModel(ErrorType.Unauthorized)
+                };
+
+            }
+            if (request.GetUser().Login != "admin")
+            {
+                return new DeleteUserByIdResponse()
+                {
+                    Error = new ErrorModel(ErrorType.Unauthorized)
+                };
+
+            }
             var user = this.mapper.Map<User>(request);
             var command = new DeleteUserCommand()
             {

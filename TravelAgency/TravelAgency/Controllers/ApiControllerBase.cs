@@ -1,21 +1,26 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Security.Claims;
 using TravelAgency.ApplicationServices.API.Domain;
 using TravelAgency.ApplicationServices.API.ErrorHandling;
+using TravelAgency.DataAccess;
 
 namespace TravelAgency.Controllers
 {
     public abstract class ApiControllerBase : ControllerBase
     {
         protected readonly IMediator mediator;
-        protected ApiControllerBase(IMediator mediator)
+        protected readonly TravelAgencyContex contex;
+        protected ApiControllerBase(IMediator mediator, TravelAgencyContex _contex)
         {
             this.mediator = mediator;
+            this.contex= _contex;
         }
 
         protected async Task<IActionResult> HandleRequest<TRequest, TResponse>(TRequest request)
-            where TRequest : IRequest<TResponse>
+            where TRequest : IRequest<TResponse>, IUserRequest
             where TResponse : ErrorResponseBase
         {
             if (!this.ModelState.IsValid)
@@ -26,7 +31,11 @@ namespace TravelAgency.Controllers
                     .Select(x => new { property = x.Key, errors = x.Value.Errors }));
             }
 
-
+            var userName = this.User.FindFirstValue(ClaimTypes.Name);
+            if (userName != null)
+            {
+                request.SetUser(await contex.Users.FirstOrDefaultAsync(x => x.Login == userName));
+            }
             var response = await this.mediator.Send(request);
             if (response.Error != null)
             {

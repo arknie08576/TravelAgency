@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TravelAgency.ApplicationServices.API.Domain;
+using TravelAgency.ApplicationServices.API.ErrorHandling;
 using TravelAgency.DataAccess.CQRS;
 using TravelAgency.DataAccess.CQRS.Commands;
 using TravelAgency.DataAccess.Entities;
@@ -25,6 +26,22 @@ namespace TravelAgency.ApplicationServices.API.Handlers
 
         public async Task<AddTripResponse> Handle(AddTripRequest request, CancellationToken cancellationToken)
         {
+            if (request.GetUser() == null)
+            {
+                return new AddTripResponse()
+                {
+                    Error = new ErrorModel(ErrorType.Unauthorized)
+                };
+
+            }
+            if (request.GetUser().Login != "admin")
+            {
+                return new AddTripResponse()
+                {
+                    Error = new ErrorModel(ErrorType.Unauthorized)
+                };
+
+            }
             var trip = this.mapper.Map<Trip>(request);
             var command = new AddTripCommand() { Parameter = trip };
             var TripFromDb = await this.commandExecutor.Execute(command);

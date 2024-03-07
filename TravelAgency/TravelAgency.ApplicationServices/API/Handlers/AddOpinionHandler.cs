@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TravelAgency.ApplicationServices.API.Domain;
+using TravelAgency.ApplicationServices.API.ErrorHandling;
 using TravelAgency.DataAccess.CQRS;
 using TravelAgency.DataAccess.CQRS.Commands;
 using TravelAgency.DataAccess.Entities;
@@ -25,6 +26,23 @@ namespace TravelAgency.ApplicationServices.API.Handlers
 
         public async Task<AddOpinionResponse> Handle(AddOpinionRequest request, CancellationToken cancellationToken)
         {
+            if (request.GetUser() == null)
+            {
+                return new AddOpinionResponse()
+                {
+                    Error = new ErrorModel(ErrorType.Unauthorized)
+                };
+
+            }
+            if (request.GetUser().Login == "admin")
+            {
+                return new AddOpinionResponse()
+                {
+                    Error = new ErrorModel(ErrorType.Unauthorized)
+                };
+
+            }
+
             var opinion = this.mapper.Map<Opinion>(request);
             var command = new AddOpinionCommand() { Parameter = opinion };
             var opinionFromDb = await this.commandExecutor.Execute(command);

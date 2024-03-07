@@ -4,10 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TravelAgency.DataAccess.Entities;
 
 namespace TravelAgency.ApplicationServices.API.Domain
 {
-    public class GetTripsRequest : IRequest<GetTripsResponse>
+    public class GetTripsRequest : IRequest<GetTripsResponse>, IUserRequest
     {
+        private User user { get; set; }
+
+        public void SetUser(User u)
+        {
+            user = u;
+        }
+
+        public User GetUser()
+        {
+            return user;
+        }
     }
 }

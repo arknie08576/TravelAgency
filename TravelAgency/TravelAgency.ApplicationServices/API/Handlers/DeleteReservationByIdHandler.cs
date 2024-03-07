@@ -9,6 +9,7 @@ using TravelAgency.ApplicationServices.API.Domain;
 using TravelAgency.DataAccess.CQRS.Commands;
 using TravelAgency.DataAccess.CQRS;
 using TravelAgency.DataAccess.Entities;
+using TravelAgency.ApplicationServices.API.ErrorHandling;
 
 
 namespace TravelAgency.ApplicationServices.API.Handlers
@@ -27,6 +28,22 @@ namespace TravelAgency.ApplicationServices.API.Handlers
 
         public async Task<DeleteReservationByIdResponse> Handle(DeleteReservationByIdRequest request, CancellationToken cancellationToken)
         {
+            if (request.GetUser() == null)
+            {
+                return new DeleteReservationByIdResponse()
+                {
+                    Error = new ErrorModel(ErrorType.Unauthorized)
+                };
+
+            }
+            if (request.GetUser().Login != "admin")
+            {
+                return new DeleteReservationByIdResponse()
+                {
+                    Error = new ErrorModel(ErrorType.Unauthorized)
+                };
+
+            }
             var reservation = this.mapper.Map<Reservation>(request);
             var command = new DeleteReservationCommand()
             {

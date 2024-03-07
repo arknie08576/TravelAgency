@@ -1,15 +1,18 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TravelAgency.ApplicationServices.API.Domain;
+using TravelAgency.DataAccess;
 
 namespace TravelAgency.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class TripsController : ApiControllerBase
     {
-        private readonly ILogger<OpinionsController> _logger;
-        public TripsController(IMediator mediator, ILogger<OpinionsController> logger) : base(mediator)
+        private readonly ILogger<TripsController> _logger;
+        public TripsController(IMediator mediator, ILogger<TripsController> logger, TravelAgencyContex _contex) : base(mediator, _contex)
         {
             _logger = logger;
             logger.LogInformation("We are in Trips");
@@ -17,51 +20,45 @@ namespace TravelAgency.Controllers
 
         [HttpGet]
         [Route("/Trips")]
-        public async Task<IActionResult> GetAllTrips()//[FromQuery] GetTripsRequest request
+        public Task<IActionResult> GetAllTrips()//[FromQuery] GetTripsRequest request
         {
-            var response = await this.mediator.Send(new GetTripsRequest());//request
-            return this.Ok(response);
+            return this.HandleRequest<GetTripsRequest, GetTripsResponse>(new GetTripsRequest());
         }
         [HttpGet]
         [Route("/Trips/{tripId}")]
-        public async Task<IActionResult> GetById([FromRoute] int tripId)
+        public Task<IActionResult> GetById([FromRoute] int tripId)
         {
 
             var request = new GetTripByIdRequest()
             {
                 TripId = tripId
             };
-            var response = await this.mediator.Send(request);
-            return this.Ok(response);
+            return this.HandleRequest<GetTripByIdRequest, GetTripByIdResponse>(request);
         }
         [HttpPost]
         [Route("/Trips")]
-        public async Task<IActionResult> AddTrip([FromBody] AddTripRequest request)
+        public Task<IActionResult> AddTrip([FromBody] AddTripRequest request)
         {
-            var response = await this.mediator.Send(request);
-            return this.Ok(response);
+            return this.HandleRequest<AddTripRequest, AddTripResponse>(request);
 
         }
         [HttpDelete]
         [Route("/Trips/{tripId}")]
-        public async Task<IActionResult> DeleteById([FromRoute] int tripId)
+        public Task<IActionResult> DeleteById([FromRoute] int tripId)
         {
 
             var request = new DeleteTripByIdRequest()
             {
                 TripId = tripId
             };
-            var response = await this.mediator.Send(request);
-            return this.Ok(response);
+            return this.HandleRequest<DeleteTripByIdRequest, DeleteTripByIdResponse>(request);
         }
         [HttpPut]
         [Route("/Trips/{tripId}")]
-        public async Task<IActionResult> PutById([FromBody] PutTripByIdRequest request, [FromRoute] int tripId)
+        public Task<IActionResult> PutById([FromBody] PutTripByIdRequest request)
         {
 
-            if (request.TripId != tripId) { return BadRequest(request); }
-            var response = await this.mediator.Send(request);
-            return this.Ok(response);
+            return this.HandleRequest<PutTripByIdRequest, PutTripByIdResponse>(request);
         }
 
     }

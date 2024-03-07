@@ -30,7 +30,7 @@ namespace TravelAgency.ApplicationServices.API.Handlers
 
             var query = new GetUserQuery()
             {
-                Id = request.UserId,
+                Login = request.Username,
             };
             var user = await this.queryExecutor.Execute(query);
             var mappedUser = this.mapper.Map<Domain.Models.User>(user);

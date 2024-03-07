@@ -1,17 +1,20 @@
 ﻿using Azure.Core;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TravelAgency.ApplicationServices.API.Domain;
+using TravelAgency.DataAccess;
 
 namespace TravelAgency.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route ("[controller]")]
     public class OpinionsController : ApiControllerBase
     {
         
         private readonly ILogger<OpinionsController> _logger;
-        public OpinionsController(IMediator mediator, ILogger<OpinionsController> logger) : base(mediator) {
+        public OpinionsController(IMediator mediator, ILogger<OpinionsController> logger, TravelAgencyContex _contex) : base(mediator, _contex) {
 
             _logger = logger;
             logger.LogInformation("We are in Opinions");
@@ -35,10 +38,13 @@ namespace TravelAgency.Controllers
             };
             return this.HandleRequest<GetOpinionByIdRequest, GetOpinionByIdResponse>(request);
         }
+        
         [HttpPost]
         [Route ("/Opinions")]
         public Task<IActionResult> AddOpinion([FromBody] AddOpinionRequest request)
         {
+
+
 
             return this.HandleRequest<AddOpinionRequest,AddOpinionResponse>(request);
             //if (!this.ModelState.IsValid)
@@ -63,7 +69,7 @@ namespace TravelAgency.Controllers
         }
         [HttpPut]
         [Route("/Opinions/{opinionId}")]
-        public Task<IActionResult> PutById([FromBody] PutOpinionByIdRequest request, [FromRoute] int opinionId)
+        public Task<IActionResult> PutById([FromBody] PutOpinionByIdRequest request)
         {
 
             

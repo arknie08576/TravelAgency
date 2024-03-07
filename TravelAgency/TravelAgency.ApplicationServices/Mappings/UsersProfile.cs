@@ -25,7 +25,7 @@ namespace TravelAgency.ApplicationServices.Mappings
                 .ForMember(x => x.Email, y => y.MapFrom(z => z.Email));
 
             CreateMap<AddUserRequest, User>()
-                .ForMember(x => x.Id, y => y.MapFrom(z => z.UserId))
+               // .ForMember(x => x.Id, y => y.MapFrom(z => z.UserId))
                 .ForMember(x => x.Name, y => y.MapFrom(z => z.Name))
                 .ForMember(x => x.Surname, y => y.MapFrom(z => z.Surname))
                 .ForMember(x => x.Login, y => y.MapFrom(z => z.Login))

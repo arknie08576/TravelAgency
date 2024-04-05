@@ -12,31 +12,34 @@ using TravelAgency.ApplicationServices.API.ErrorHandling;
 
 namespace TravelAgency.ApplicationServices.API.Handlers
 {
-    public class GetUserByIdHandler : IRequestHandler<GetUserByIdRequest, GetUserByIdResponse>
+    public class GetUserMeHandler : IRequestHandler<GetUserMeRequest, GetUserMeResponse>
     {
 
         private readonly IMapper mapper;
         private readonly IQueryExecutor queryExecutor;
-        public GetUserByIdHandler(IMapper mapper, IQueryExecutor queryExecutor)
+        public GetUserMeHandler(IMapper mapper, IQueryExecutor queryExecutor)
         {
 
             this.mapper = mapper;
             this.queryExecutor = queryExecutor;
 
         }
-        public async Task<GetUserByIdResponse> Handle(GetUserByIdRequest request, CancellationToken cancellationToken)
+        public async Task<GetUserMeResponse> Handle(GetUserMeRequest request, CancellationToken cancellationToken)
         {
 
 
 
-            var query = new GetUserQuery()
+            var query = new GetUserMeQuery();
+                if(request.GetUser()!=null)
             {
-                Login = request.Username,
-            };
+                query.Login = request.GetUser().Login;
+
+            }
+
             var user = await this.queryExecutor.Execute(query);
             if (user == null)
             {
-                return new GetUserByIdResponse()
+                return new GetUserMeResponse()
                 {
                     Error = new ErrorModel(ErrorType.NotFound)
 
@@ -45,7 +48,7 @@ namespace TravelAgency.ApplicationServices.API.Handlers
             }
             var mappedUser = this.mapper.Map<Domain.Models.User>(user);
 
-            var response = new GetUserByIdResponse()
+            var response = new GetUserMeResponse()
             {
                 Data = mappedUser
 

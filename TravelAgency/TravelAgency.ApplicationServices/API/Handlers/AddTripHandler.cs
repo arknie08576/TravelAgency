@@ -34,7 +34,7 @@ namespace TravelAgency.ApplicationServices.API.Handlers
                 };
 
             }
-            if (request.GetUser().Login != "admin")
+            if (request.GetUser().Role == UserRole.user)
             {
                 return new AddTripResponse()
                 {

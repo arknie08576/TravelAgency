@@ -20,7 +20,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 //builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<TravelAgencyContex>(
-    opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("TravelAgencyDatabaseConnection")));
+    opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureDB")));
 builder.Services.AddControllers();
 builder.Services.AddAuthentication("BasicAuthentication")
     .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
@@ -34,7 +34,9 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 builder.Services.AddTransient<IQueryExecutor,QueryExecutor>();
 builder.Services.AddTransient<ICommandExecutor, CommandExecutor>();
 builder.Services.AddAutoMapper(typeof(OpinionsProfile).Assembly);
-
+builder.Services.AddCors(options => options.AddDefaultPolicy(z => z.AllowAnyOrigin()
+                                                               .AllowAnyHeader()
+                                                               .AllowAnyMethod());
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -51,7 +53,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

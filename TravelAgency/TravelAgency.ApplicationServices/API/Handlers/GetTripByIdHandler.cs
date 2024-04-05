@@ -8,6 +8,7 @@ using TravelAgency.ApplicationServices.API.Domain;
 using TravelAgency.DataAccess.CQRS.Queries;
 using TravelAgency.DataAccess.CQRS;
 using MediatR;
+using TravelAgency.ApplicationServices.API.ErrorHandling;
 
 namespace TravelAgency.ApplicationServices.API.Handlers
 {
@@ -33,6 +34,15 @@ namespace TravelAgency.ApplicationServices.API.Handlers
                 Id = request.TripId,
             };
             var trip = await this.queryExecutor.Execute(query);
+            if (trip == null)
+            {
+                return new GetTripByIdResponse()
+                {
+                    Error = new ErrorModel(ErrorType.NotFound)
+
+                };
+
+            }
             var mappedTrip = this.mapper.Map<Domain.Models.Trip>(trip);
 
             var response = new GetTripByIdResponse()

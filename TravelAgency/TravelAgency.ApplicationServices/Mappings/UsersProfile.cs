@@ -22,6 +22,7 @@ namespace TravelAgency.ApplicationServices.Mappings
                 .ForMember(x => x.Name, y => y.MapFrom(z => z.Name))
                 .ForMember(x => x.Surname, y => y.MapFrom(z => z.Surname))
                 .ForMember(x => x.Login, y => y.MapFrom(z => z.Login))
+                .ForMember(x => x.Role, y => y.MapFrom(z => z.Role))
                 .ForMember(x => x.Email, y => y.MapFrom(z => z.Email));
 
             CreateMap<AddUserRequest, User>()
@@ -29,6 +30,7 @@ namespace TravelAgency.ApplicationServices.Mappings
                 .ForMember(x => x.Name, y => y.MapFrom(z => z.Name))
                 .ForMember(x => x.Surname, y => y.MapFrom(z => z.Surname))
                 .ForMember(x => x.Login, y => y.MapFrom(z => z.Login))
+                .ForMember(x => x.Role, y => y.MapFrom(z => z.Role))
                 .ForMember(x => x.Email, y => y.MapFrom(z => z.Email));
 
             CreateMap<User, API.Domain.Models.User>()
@@ -36,6 +38,7 @@ namespace TravelAgency.ApplicationServices.Mappings
                 .ForMember(x => x.Name, y => y.MapFrom(z => z.Name))
                 .ForMember(x => x.Surname, y => y.MapFrom(z => z.Surname))
                 .ForMember(x => x.Login, y => y.MapFrom(z => z.Login))
+                .ForMember(x => x.Role, y => y.MapFrom(z => z.Role))
                 .ForMember(x => x.Email, y => y.MapFrom(z => z.Email));
 
 

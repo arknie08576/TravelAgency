@@ -25,6 +25,19 @@ namespace TravelAgency.Controllers
             return this.HandleRequest<GetUsersRequest, GetUsersResponse>(new GetUsersRequest());
         }
         [HttpGet]
+        [Route("/Users/me")]
+        public Task<IActionResult> GetMe()//[FromQuery] GetUsersRequest request
+        {
+            return this.HandleRequest<GetUserMeRequest, GetUserMeResponse>(new GetUserMeRequest());
+        }
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("/Users/authenticate")]
+        public Task<IActionResult> AuthenticateMe([FromBody] AuthenticateMeRequest request)//[FromQuery] GetUsersRequest request
+        {
+            return this.HandleRequest<AuthenticateMeRequest, AuthenticateMeResponse>(request);
+        }
+        [HttpGet]
         [Route("/Users/{username}")]
         public Task<IActionResult> GetById([FromRoute] string username)
         {

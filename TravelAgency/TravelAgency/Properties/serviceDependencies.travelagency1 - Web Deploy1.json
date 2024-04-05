@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/travelagency1/providers/Microsoft.ServiceLinker/linkers/TravelAgencyConnection_3D1CE74935",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/travel-agency/databases/TravelAgencyStorage",
+      "type": "mssql.azure",
+      "connectionId": "TravelAgencyConnection",
+      "dynamicId": null
+    }
+  }
+}

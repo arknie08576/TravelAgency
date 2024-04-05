@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TravelAgency.DataAccess;
 
@@ -11,9 +12,11 @@ using TravelAgency.DataAccess;
 namespace TravelAgency.DataAccess.Migrations
 {
     [DbContext(typeof(TravelAgencyContex))]
-    partial class TravelAgencyContexModelSnapshot : ModelSnapshot
+    [Migration("20240307132018_UserRole")]
+    partial class UserRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -17,6 +17,7 @@ namespace TravelAgency.ApplicationServices.API.Domain
         public string Login { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
+        public UserRole Role { get; set; }
         private User user { get; set; }
 
         public void SetUser(User u)

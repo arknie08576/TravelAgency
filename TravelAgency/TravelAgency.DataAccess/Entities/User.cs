@@ -24,6 +24,8 @@ namespace TravelAgency.DataAccess.Entities
         [Required]
         [MaxLength(100)]
         public string Email { get; set; }
+        [Required]
+        public UserRole Role { get; set; }
         public List<Reservation> Reservations { get; set; }
     }
 }

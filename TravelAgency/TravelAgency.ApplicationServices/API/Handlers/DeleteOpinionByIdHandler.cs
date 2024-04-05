@@ -36,14 +36,7 @@ namespace TravelAgency.ApplicationServices.API.Handlers
                 };
 
             }
-            if (request.GetUser().Login != "admin")
-            {
-                return new DeleteOpinionByIdResponse()
-                {
-                    Error = new ErrorModel(ErrorType.Unauthorized)
-                };
 
-            }
             var opinion = this.mapper.Map<Opinion>(request);
             var command = new DeleteOpinionCommand() { 
                 Parameter = opinion,

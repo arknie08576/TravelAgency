@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,16 +8,10 @@ using TravelAgency.DataAccess.Entities;
 
 namespace TravelAgency.ApplicationServices.API.Domain
 {
-    public class PutUserByIdRequest : IRequest<PutUserByIdResponse>, IUserRequest
+    public class GetUserMeRequest : IRequest<GetUserMeResponse>, IUserRequest
     {
-        public int UserId { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string Login { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
         private User user { get; set; }
-        public UserRole Role { get; set; }
+
         public void SetUser(User u)
         {
             user = u;

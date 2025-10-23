@@ -1,17 +1,18 @@
 using FluentValidation.AspNetCore;
+using MagazynEdu.Authentication;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NLog;
+using NLog.Web;
 using System.Reflection;
 using TravelAgency.ApplicationServices.API.Domain;
 using TravelAgency.ApplicationServices.API.Validators;
 using TravelAgency.ApplicationServices.Mappings;
 using TravelAgency.DataAccess;
 using TravelAgency.DataAccess.CQRS;
+using YourNamespace;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using NLog;
-using NLog.Web;
-using Microsoft.AspNetCore.Authentication;
-using MagazynEdu.Authentication;
 
 var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
@@ -20,7 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 //builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<TravelAgencyContex>(
-    opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("AzureDB")));
+    opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("TravelAgencyDatabaseConnection")));
 builder.Services.AddControllers();
 builder.Services.AddAuthentication("BasicAuthentication")
     .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
@@ -36,7 +37,7 @@ builder.Services.AddTransient<ICommandExecutor, CommandExecutor>();
 builder.Services.AddAutoMapper(typeof(OpinionsProfile).Assembly);
 builder.Services.AddCors(options => options.AddDefaultPolicy(z => z.AllowAnyOrigin()
                                                                .AllowAnyHeader()
-                                                               .AllowAnyMethod());
+                                                               .AllowAnyMethod()));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -46,7 +47,11 @@ builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
 builder.Host.UseNLog();
     
 var app = builder.Build();
-
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<TravelAgencyContex>();
+    await DbSeeder.SeedAsync(dbContext);
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

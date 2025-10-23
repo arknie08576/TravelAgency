@@ -17,7 +17,7 @@ namespace TravelAgency.Controllers
             _logger = logger;
             logger.LogInformation("We are in Trips");
         }
-
+        [AllowAnonymous]
         [HttpGet]
         [Route("/Trips")]
         public Task<IActionResult> GetAllTrips()//[FromQuery] GetTripsRequest request

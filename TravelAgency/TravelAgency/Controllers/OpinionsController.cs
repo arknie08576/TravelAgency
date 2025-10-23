@@ -19,7 +19,7 @@ namespace TravelAgency.Controllers
             _logger = logger;
             logger.LogInformation("We are in Opinions");
         }
-
+        [AllowAnonymous]
         [HttpGet]
         [Route("/Opinions")]
         public  Task<IActionResult> GetAllOpinions()//[FromQuery] GetOpinionsRequest request
@@ -27,6 +27,7 @@ namespace TravelAgency.Controllers
             
             return this.HandleRequest<GetOpinionsRequest, GetOpinionsResponse>(new GetOpinionsRequest());
         }
+
         [HttpGet]
         [Route("/Opinions/{opinionId}")]
         public Task<IActionResult> GetById([FromRoute] int opinionId)

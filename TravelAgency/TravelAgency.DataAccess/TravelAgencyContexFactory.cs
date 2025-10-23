@@ -13,7 +13,7 @@ namespace TravelAgency.DataAccess
         public TravelAgencyContex CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<TravelAgencyContex>();
-            optionsBuilder.UseSqlServer("Server=tcp:travel-agency.database.windows.net,1433;Initial Catalog=TravelAgencyStorage;Persist Security Info=False;User ID=arknie08576;Password=aArkus14;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+            optionsBuilder.UseSqlServer("Data Source=DESKTOP-TEFRQV5\\SQLEXPRESS;Initial Catalog=TA;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
             return new TravelAgencyContex(optionsBuilder.Options);
         }
     }

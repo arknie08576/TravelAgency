@@ -24,6 +24,7 @@ namespace TravelAgency.Controllers
         {
             return this.HandleRequest<GetTripsRequest, GetTripsResponse>(new GetTripsRequest());
         }
+        [AllowAnonymous]
         [HttpGet]
         [Route("/Trips/{tripId}")]
         public Task<IActionResult> GetById([FromRoute] int tripId)

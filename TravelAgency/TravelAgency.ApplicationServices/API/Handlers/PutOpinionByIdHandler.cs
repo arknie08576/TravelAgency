@@ -34,14 +34,7 @@ namespace TravelAgency.ApplicationServices.API.Handlers
                 };
 
             }
-            if (request.GetUser().Role == UserRole.admin)
-            {
-                return new PutOpinionByIdResponse()
-                {
-                    Error = new ErrorModel(ErrorType.Unauthorized)
-                };
 
-            }
             var opinion = this.mapper.Map<Opinion>(request);
             var command = new PutOpinionByIdCommand() { Parameter = opinion };
             var opinionFromDb = await this.commandExecutor.Execute(command);
